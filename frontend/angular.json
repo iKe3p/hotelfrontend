@@ -48,6 +48,7 @@
                   "maximumError": "1MB"
                 }
               ],
+              "inlineCriticalCss": false,
               "outputHashing": "all"
             },
             "development": {
