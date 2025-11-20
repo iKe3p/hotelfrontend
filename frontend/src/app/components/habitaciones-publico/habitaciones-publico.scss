@@ -1,0 +1,189 @@
+:root {
+  --azul-oasis: #4A90E2;
+  --azul-claro: #87CEEB;
+  --azul-cielo: #B0E0E6;
+  --azul-profundo: #1E3A8A;
+  --azul-royal: #4169E1;
+  --blanco: #ffffff;
+  --gris-claro: #F8FAFC;
+  --gris-medio: #E2E8F0;
+  --gris-oscuro: #334155;
+  --negro: #1a1a1a;
+  --negro-suave: #2d2d2d;
+  --negro-carbon: #0f0f0f;
+  --negro-profundo: #000000;
+  --negro-elegante: #1c1c1c;
+  --negro-metalico: #2c2c2c;
+  --dorado-elegante: #F59E0B;
+  --sombra-azul: rgba(74, 144, 226, 0.3);
+  --sombra-negra: rgba(0, 0, 0, 0.4);
+  --sombra-negra-intensa: rgba(0, 0, 0, 0.7);
+}
+
+.section-custom {
+  background: linear-gradient(135deg, var(--negro) 0%, var(--negro-suave) 50%, var(--gris-oscuro) 100%);
+  border-top: 3px solid var(--azul-oasis);
+  box-shadow: inset 0 10px 30px var(--sombra-negra);
+  padding: 60px 20px;
+  min-height: calc(100vh - 80px);
+}
+
+.container-custom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section-title {
+  color: var(--azul-oasis);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.section-subtitle {
+  color: var(--blanco);
+  text-shadow: 0 1px 3px var(--sombra-negra);
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.room-card {
+  background: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 50%, var(--gris-oscuro) 100%);
+  border: 2px solid var(--azul-oasis);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px var(--sombra-negra), 0 0 20px rgba(74, 144, 226, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(15px);
+}
+
+.room-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px var(--sombra-negra-intensa), 0 0 30px rgba(74, 144, 226, 0.5);
+}
+
+.room-image {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.room-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, var(--azul-oasis) 0%, var(--azul-royal) 100%);
+  color: var(--blanco);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+}
+
+.room-content {
+  padding: 25px;
+  color: var(--blanco);
+}
+
+.room-content h3 {
+  color: var(--azul-oasis);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.room-content p {
+  color: var(--blanco);
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.room-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.room-price {
+  color: var(--dorado-elegante);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.room-price span {
+  font-size: 0.9rem;
+  color: var(--blanco);
+  opacity: 0.7;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--dorado-elegante) 0%, #D97706 100%);
+  color: var(--blanco);
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+}
+
+.btn-gold.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.btn-outline-gold {
+  background: transparent;
+  color: var(--dorado-elegante);
+  border: 2px solid var(--dorado-elegante);
+  padding: 12px 30px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn-outline-gold:hover {
+  background: linear-gradient(135deg, var(--dorado-elegante) 0%, #D97706 100%);
+  color: var(--blanco);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+}
+
+.alert-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+

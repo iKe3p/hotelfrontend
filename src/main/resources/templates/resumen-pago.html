@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen del Pago</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        :root {
+            --azul-oasis: #4A90E2;
+            --negro: #1a1a1a;
+            --negro-suave: #2d2d2d;
+            --negro-carbon: #0f0f0f;
+            --gris-oscuro: #334155;
+            --blanco: #ffffff;
+            --sombra-negra: rgba(0, 0, 0, 0.4);
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            border: 2px solid #28a745 !important;
+            color: #ffffff !important;
+            border-radius: 15px !important;
+            padding: 20px !important;
+            margin: 20px 0 !important;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3) !important;
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #4A90E2 0%, #4169E1 100%);
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(74, 144, 226, 0.4);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body style="background: linear-gradient(135deg, var(--negro-carbon) 0%, var(--negro) 30%, var(--gris-oscuro) 70%, #F0F8FF 100%); color: var(--blanco); font-family: 'Inter', sans-serif; min-height: 100vh;">
+<div class="container-custom">
+    <h1 class="section-title" style="color: var(--azul-oasis); font-family: 'Playfair Display', serif; font-weight: 700; text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);">Resumen del Pago</h1>
+    <div class="summary" style="background: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 50%, var(--gris-oscuro) 100%); border: 2px solid var(--azul-oasis); border-radius: 20px; padding: 30px; box-shadow: 0 15px 40px var(--sombra-negra), 0 0 20px rgba(74, 144, 226, 0.3); backdrop-filter: blur(15px);">
+        <div class="alert-success">
+            <h2 style="color: #ffffff; margin: 0;"><i class="fas fa-check-circle"></i> ¡Pago Exitoso!</h2>
+        </div>
+        <h2 style="color: var(--azul-oasis); font-family: 'Playfair Display', serif; font-weight: 700; text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);">Detalles de la Reserva</h2>
+        <p style="color: var(--blanco);"><strong style="color: var(--azul-oasis);">Reserva ID:</strong> <span th:text="${reserva.id}" style="color: var(--blanco);"></span></p>
+        <p style="color: var(--blanco);"><strong style="color: var(--azul-oasis);">Habitación:</strong> <span th:text="${reserva.habitacion.tipo}" style="color: var(--blanco);"></span></p>
+        <p style="color: var(--blanco);"><strong style="color: var(--azul-oasis);">Fecha de Entrada:</strong> <span th:text="${reserva.fechaInicio}" style="color: var(--blanco);"></span></p>
+        <p style="color: var(--blanco);"><strong style="color: var(--azul-oasis);">Fecha de Salida:</strong> <span th:text="${reserva.fechaFin}" style="color: var(--blanco);"></span></p>
+        <h3 style="color: var(--azul-oasis);">Servicios Adicionales</h3>
+        <ul>
+            <li th:each="servicio : ${reserva.servicios}" th:text="${servicio.nombre} + ' - S/.' + ${servicio.precio}">
+                <span th:if="${reserva.opcionesServicios.containsKey(servicio.nombre)}" th:text="' (' + ${reserva.opcionesServicios.get(servicio.nombre)} + ')'"></span>
+            </li>
+        </ul>
+        <h3 style="color: var(--azul-oasis);">Total Pagado: S/.<span th:text="${reserva.totalPagar}" style="color: var(--blanco);"></span></h3>
+        <a th:href="@{/}" class="btn-gold">Volver al Inicio</a>
+    </div>
+</div>
+</body>
+</html>

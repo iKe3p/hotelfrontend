@@ -1,0 +1,53 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h2 class="mb-4">Generar Reportes</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <form (ngSubmit)="generarReporte()">
+    <div class="mb-3">
+      <label for="reportType" class="form-label">Tipo de Reporte:</label>
+      <select class="form-select" id="reportType" [(ngModel)]="reportType" name="reportType" required>
+        <option value="">Seleccione un tipo de reporte</option>
+        <option value="ingresos">Ingresos por Período</option>
+        <option value="movimiento">Movimiento (Check-ins/Check-outs) por Período</option>
+      </select>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="fechaInicio" class="form-label">Fecha de Inicio:</label>
+        <input type="date" class="form-control" id="fechaInicio" [(ngModel)]="fechaInicio" 
+               name="fechaInicio" required>
+      </div>
+      <div class="col-md-6">
+        <label for="fechaFin" class="form-label">Fecha de Fin:</label>
+        <input type="date" class="form-control" id="fechaFin" [(ngModel)]="fechaFin" 
+               name="fechaFin" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Generar Reporte</button>
+  </form>
+
+  <div *ngIf="showResults" class="mt-4">
+    <hr style="border-color: var(--negro-elegante); background: linear-gradient(90deg, transparent, var(--negro-elegante), transparent); height: 2px; opacity: 0.8;">
+    <h3>Resultados del Reporte: {{ reportTitle }}</h3>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th *ngFor="let header of getTableHeaders()">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of getTableRows()">
+            <td *ngFor="let cell of row">{{ cell }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

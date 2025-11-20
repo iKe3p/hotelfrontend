@@ -1,0 +1,94 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.metric-card {
+  background: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 50%, var(--gris-oscuro) 100%);
+  border: 2px solid var(--azul-oasis);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.4s ease;
+  height: 100%;
+  box-shadow: 0 10px 30px var(--sombra-negra), 0 0 20px rgba(74, 144, 226, 0.3);
+}
+
+.metric-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px var(--sombra-negra), 0 0 30px var(--azul-oasis);
+  border-color: var(--azul-royal);
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  color: var(--azul-oasis);
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  margin: 10px 0;
+  text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);
+}
+
+.metric-label {
+  color: var(--blanco);
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 3px var(--sombra-negra);
+}
+
+.table {
+  background: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 100%);
+  color: var(--blanco);
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px solid var(--azul-oasis);
+}
+
+.table thead {
+  background: linear-gradient(90deg, var(--negro) 0%, var(--azul-profundo) 50%, var(--negro-suave) 100%);
+}
+
+.table th {
+  color: var(--blanco);
+  font-weight: 600;
+  border-bottom: 2px solid var(--azul-oasis);
+}
+
+.table td {
+  color: var(--blanco);
+  border-bottom: 1px solid rgba(74, 144, 226, 0.2);
+}
+
+.badge {
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.bg-primary {
+  background: var(--azul-oasis) !important;
+}
+
+.bg-info {
+  background: #3498db !important;
+}
+
+.bg-success {
+  background: #27ae60 !important;
+}
+
+.bg-danger {
+  background: #e74c3c !important;
+}
+
+.alert-info {
+  background: #6c757d;
+  color: var(--blanco);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+}
+

@@ -1,0 +1,23 @@
+Arquitectura del Sistema de Gestión Hotelera:
+
+Frontend
+
+Tecnología: Angular, HTML, CSS, JavaScript
+
+Función: Actúa como la capa de Vista, encargada de la interfaz de usuario y la interacción con el cliente.
+
+Backend
+Tecnología: Spring Boot
+
+Función: Gestiona el Controlador y el Modelo, y se divide en capas:
+
+Controladores: Manejan las peticiones del cliente.
+
+Servicios: Contienen la lógica de negocio principal.
+
+Repositorios: Se encargan del acceso a los datos y la interacción con la base de datos.
+
+Herramientas de Desarrollo
+Editor: Visual Studio Code
+
+Control de Versiones: Git Bash (local) y GitHub (remoto)

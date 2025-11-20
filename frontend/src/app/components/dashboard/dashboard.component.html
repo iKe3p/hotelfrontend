@@ -1,0 +1,126 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <div *ngIf="isAdmin || isRecepcionista">
+    <h2 class="mb-4">Dashboard Personal</h2>
+    <p class="lead">Bienvenido al sistema de gestión hotelera, {{ user?.sub || 'Usuario' }}.</p>
+
+    <h3 class="mt-5 mb-4">Resumen Operacional</h3>
+
+    <div *ngIf="isAdmin" class="row">
+      <div class="col-md-4 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-bed fa-3x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">Total de Habitaciones</h5>
+          <p class="metric-value">{{ totalHabitaciones }}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-users fa-3x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">Total Clientes</h5>
+          <p class="metric-value">{{ totalClientes }}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-calendar-check fa-3x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">Total Reservas</h5>
+          <p class="metric-value">{{ totalReservas }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-4 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-check-circle fa-3x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">Habitaciones Disponibles</h5>
+          <p class="metric-value">{{ habitacionesDisponibles }}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-door-closed fa-3x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">Habitaciones Ocupadas</h5>
+          <p class="metric-value">{{ habitacionesOcupadas }}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-tools fa-3x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">En Mantenimiento</h5>
+          <p class="metric-value">{{ habitacionesMantenimiento }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isAdmin" class="row mt-4">
+      <div class="col-md-6 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-dollar-sign fa-3x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">Ingresos Totales</h5>
+          <p class="metric-value">S/. {{ ingresosTotales | number:'1.2-2' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isCliente">
+    <h2 class="mb-4">Mi Cuenta - Cliente</h2>
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-calendar-alt fa-2x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">Reservas Activas</h5>
+          <p class="metric-value">{{ reservasActivasCliente }}</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="metric-card">
+          <i class="fas fa-history fa-2x" style="color: var(--azul-oasis); margin-bottom: 15px;"></i>
+          <h5 class="metric-label">Reservas Finalizadas</h5>
+          <p class="metric-value">{{ reservasFinalizadasCliente }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <h3>Historial de Reservas</h3>
+      <div *ngIf="reservasCliente.length === 0" class="alert alert-info">
+        No tienes reservas registradas.
+      </div>
+      <table *ngIf="reservasCliente.length > 0" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Habitación</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Total</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reserva of reservasCliente">
+            <td>{{ reserva.habitacion?.numero }} ({{ reserva.habitacion?.tipo }})</td>
+            <td>{{ reserva.fechaInicio | date:'dd-MM-yyyy' }}</td>
+            <td>{{ reserva.fechaFin | date:'dd-MM-yyyy' }}</td>
+            <td>S/. {{ reserva.totalPagar | number:'1.2-2' }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-primary': reserva.estadoReserva === 'ACTIVA',
+                'bg-info': reserva.estadoReserva === 'PENDIENTE',
+                'bg-success': reserva.estadoReserva === 'FINALIZADA',
+                'bg-danger': reserva.estadoReserva === 'CANCELADA'
+              }">
+                {{ reserva.estadoReserva }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

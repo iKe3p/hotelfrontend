@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+:root {
+  --azul-oasis: #4A90E2;
+  --azul-claro: #87CEEB;
+  --azul-cielo: #B0E0E6;
+  --azul-profundo: #1E3A8A;
+  --azul-royal: #4169E1;
+  --blanco: #ffffff;
+  --gris-claro: #F8FAFC;
+  --gris-medio: #E2E8F0;
+  --gris-oscuro: #334155;
+  --negro: #1a1a1a;
+  --negro-suave: #2d2d2d;
+  --negro-carbon: #0f0f0f;
+  --negro-profundo: #000000;
+  --negro-elegante: #1c1c1c;
+  --negro-metalico: #2c2c2c;
+  --dorado-elegante: #F59E0B;
+  --sombra-azul: rgba(74, 144, 226, 0.3);
+  --sombra-negra: rgba(0, 0, 0, 0.4);
+  --sombra-negra-intensa: rgba(0, 0, 0, 0.7);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, var(--negro-carbon) 0%, var(--negro) 20%, var(--gris-oscuro) 60%, #F0F8FF 100%);
+  color: var(--blanco);
+  min-height: 100vh;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, var(--azul-oasis) 0%, var(--azul-royal) 100%);
+  color: var(--blanco);
+  border: none;
+  font-weight: 600;
+  border-radius: 25px;
+  padding: 12px 30px;
+  box-shadow: 0 8px 25px var(--sombra-azul);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-gold:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px var(--sombra-azul);
+}
+
+.btn-outline-gold {
+  background: transparent;
+  color: var(--azul-oasis);
+  border: 2px solid var(--azul-oasis);
+  font-weight: 600;
+  border-radius: 25px;
+  padding: 12px 30px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-outline-gold:hover {
+  background: var(--azul-oasis);
+  color: var(--blanco);
+  transform: translateY(-3px);
+}
+
+.container-custom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section-custom {
+  padding: 80px 0;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--azul-oasis);
+  text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--blanco);
+  margin-bottom: 50px;
+  text-shadow: 0 1px 3px var(--sombra-negra);
+}

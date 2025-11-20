@@ -1,0 +1,49 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <div class="form-section">
+    <h2 class="mb-4">Registro de Nuevo Cliente</h2>
+
+    <div *ngIf="successMessage" class="alert alert-success" role="alert">
+      <span>{{ successMessage }}</span>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #registroForm="ngForm">
+      <div class="mb-3">
+        <label for="nombres" class="form-label">Nombres:</label>
+        <input type="text" id="nombres" name="nombres" [(ngModel)]="cliente.nombres" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="apellidos" class="form-label">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" [(ngModel)]="cliente.apellidos" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="dni" class="form-label">DNI:</label>
+        <input type="text" id="dni" name="dni" [(ngModel)]="cliente.dni" (input)="onDniInput($event)" 
+               class="form-control" required pattern="[0-9]{8}" maxlength="8" 
+               title="El DNI debe tener exactamente 8 dígitos numéricos">
+      </div>
+      <div class="mb-3">
+        <label for="nacionalidad" class="form-label">Nacionalidad:</label>
+        <input type="text" id="nacionalidad" name="nacionalidad" [(ngModel)]="cliente.nacionalidad" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" id="email" name="email" [(ngModel)]="cliente.email" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="telefono" class="form-label">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" [(ngModel)]="cliente.telefono" class="form-control">
+      </div>
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Registrar Cliente</span>
+          <span *ngIf="isSubmitting">Registrando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

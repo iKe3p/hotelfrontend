@@ -1,0 +1,66 @@
+<nav class="navbar-custom">
+  <div class="container-custom">
+    <a routerLink="/" class="navbar-brand-custom">
+      <i class="fas fa-hotel"></i> Oasis Digital
+    </a>
+    <button class="navbar-toggle" (click)="toggleMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <ul class="navbar-menu" [class.active]="menuOpen">
+      <li *ngIf="!isLoggedIn"><a routerLink="/">Inicio</a></li>
+      <li *ngIf="isLoggedIn && (isAdmin || isRecepcionista)">
+        <a routerLink="/dashboard">Dashboard</a>
+      </li>
+      <li *ngIf="isLoggedIn && isRecepcionista">
+        <a routerLink="/clientes">Clientes</a>
+      </li>
+      <li *ngIf="isLoggedIn && (isAdmin || isRecepcionista)">
+        <a routerLink="/habitaciones">Habitaciones</a>
+      </li>
+      <li *ngIf="isLoggedIn && (isAdmin || isRecepcionista || isCliente)">
+        <a routerLink="/reservas">Reservas</a>
+      </li>
+      <li *ngIf="isLoggedIn && (isAdmin || isRecepcionista)">
+        <a routerLink="/reservas/crear">Generar Reserva</a>
+      </li>
+      <li *ngIf="isLoggedIn && isAdmin" class="dropdown">
+        <a href="#" (click)="toggleEmpleadosDropdown($event)">
+          <i class="fas fa-users"></i> Empleados
+        </a>
+        <div class="dropdown-content" [class.show]="empleadosDropdownOpen">
+          <a routerLink="/empleados/registrar" (click)="closeEmpleadosDropdown()">
+            <i class="fas fa-user-plus"></i> Registrar
+          </a>
+          <a routerLink="/empleados/lista" (click)="closeEmpleadosDropdown()">
+            <i class="fas fa-list"></i> Lista
+          </a>
+        </div>
+      </li>
+      <li *ngIf="isLoggedIn && isAdmin">
+        <a routerLink="/reportes/generar">Reportes</a>
+      </li>
+      <li *ngIf="isLoggedIn && isAdmin">
+        <a routerLink="/auditoria/logs">Logs</a>
+      </li>
+      <li *ngIf="!isLoggedIn">
+        <a routerLink="/login" class="btn-nav-login">
+          <i class="fas fa-sign-in-alt"></i> Ingresar
+        </a>
+      </li>
+      <li *ngIf="isLoggedIn" class="dropdown">
+        <a href="#" class="btn-nav-outline" (click)="toggleDropdown($event)">
+          <i class="fas fa-user-circle"></i> {{ username }}
+        </a>
+        <div class="dropdown-content" [class.show]="dropdownOpen">
+          <a routerLink="/dashboard" (click)="closeDropdown()">
+            <i class="fas fa-chart-line"></i> Mi Cuenta
+          </a>
+          <a (click)="logout()" style="cursor: pointer;">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+

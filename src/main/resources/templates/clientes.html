@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clientes - Oasis Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body class="oasis-bg" style="background: linear-gradient(135deg, var(--negro-carbon) 0%, var(--negro) 20%, var(--gris-oscuro) 60%, #F0F8FF 100%); color: var(--blanco);">
+    <nav class="navbar navbar-expand-lg oasis-navbar" style="background: linear-gradient(90deg, var(--negro) 0%, var(--negro-suave) 50%, var(--gris-oscuro) 100%) !important; border-bottom: 3px solid var(--azul-oasis); box-shadow: 0 4px 20px var(--sombra-negra), 0 0 15px var(--sombra-azul);">
+        <div class="container">
+            <a class="navbar-brand oasis-brand" th:href="@{/dashboard}">
+                <i class="fas fa-hotel me-2"></i>Oasis Digital
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/dashboard}">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/clientes}">
+                            <i class="fas fa-users me-1"></i>Clientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/habitaciones}">
+                            <i class="fas fa-bed me-1"></i>Habitaciones
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/reservas}">
+                            <i class="fas fa-calendar-check me-1"></i>Reservas
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            <span sec:authentication="name">Usuario</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:href="@{/logout}">
+                                <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="oasis-card" style="background: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 50%, var(--gris-oscuro) 100%); border: 2px solid var(--azul-oasis); box-shadow: 0 15px 40px var(--sombra-negra), 0 0 20px rgba(74, 144, 226, 0.3);">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h2 class="oasis-title mb-0" style="color: var(--azul-oasis); text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);">
+                            <i class="fas fa-users me-2"></i>Gestión de Clientes
+                        </h2>
+                        <a th:href="@{/clientes/registro}" class="btn oasis-btn-primary">
+                            <i class="fas fa-plus me-1"></i>Nuevo Cliente
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="buscarCliente" placeholder="Buscar por DNI, nombre o email...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead style="background: linear-gradient(90deg, var(--negro) 0%, var(--azul-profundo) 50%, var(--negro-suave) 100%); color: var(--blanco);">
+                                    <tr>
+                                        <th>DNI</th>
+                                        <th>Nombre Completo</th>
+                                        <th>Email</th>
+                                        <th>Teléfono</th>
+                                        <th>Fecha Registro</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaClientes">
+                                    <tr th:each="cliente : ${clientes}">
+                                        <td th:text="${cliente.dni}"></td>
+                                        <td th:text="${cliente.nombre + ' ' + cliente.apellido}"></td>
+                                        <td th:text="${cliente.email}"></td>
+                                        <td th:text="${cliente.telefono}"></td>
+                                        <td th:text="${#temporals.format(cliente.fechaRegistro, 'dd/MM/yyyy')}"></td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a th:href="@{/clientes/historial/{id}(id=${cliente.id})}" 
+                                                   class="btn btn-sm oasis-btn-secondary" title="Ver Historial">
+                                                    <i class="fas fa-history"></i>
+                                                </a>
+                                                <a th:href="@{/clientes/editar/{id}(id=${cliente.id})}" 
+                                                   class="btn btn-sm btn-outline-primary" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div th:if="${#lists.isEmpty(clientes)}" class="text-center py-4">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <h5 style="color: var(--blanco); text-shadow: 0 1px 3px var(--sombra-negra);">No hay clientes registrados</h5>
+                            <p style="color: var(--blanco); opacity: 0.8; text-shadow: 0 1px 2px var(--sombra-negra);">Comienza registrando el primer cliente del hotel</p>
+                            <a th:href="@{/clientes/registro}" class="btn oasis-btn-primary">
+                                <i class="fas fa-plus me-1"></i>Registrar Cliente
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Búsqueda en tiempo real
+        document.getElementById('buscarCliente').addEventListener('input', function() {
+            const filtro = this.value.toLowerCase();
+            const filas = document.querySelectorAll('#tablaClientes tr');
+            
+            filas.forEach(fila => {
+                const texto = fila.textContent.toLowerCase();
+                fila.style.display = texto.includes(filtro) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>

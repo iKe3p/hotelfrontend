@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+
+<section id="inicio" class="hero-section-custom">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title-custom">Bienvenido a Oasis Digital</h1>
+    <p class="hero-subtitle-custom">Experiencia de lujo incomparable en el corazón de la ciudad</p>
+    <div class="hero-buttons">
+      <a *ngIf="isLoggedIn" routerLink="/reservas" class="btn-gold btn-lg">
+        <i class="fas fa-calendar-check"></i> Reservar Ahora
+      </a>
+      <a *ngIf="!isLoggedIn" routerLink="/login" class="btn-gold btn-lg">
+        <i class="fas fa-calendar-check"></i> Reservar Ahora
+      </a>
+      <a routerLink="/habitaciones/publico" class="btn-outline-gold btn-lg">
+        <i class="fas fa-search"></i> Ver Habitaciones
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="habitaciones" class="section-custom">
+  <div class="container-custom">
+    <h2 class="section-title">
+      <i class="fas fa-bed"></i> Nuestras Habitaciones
+    </h2>
+    <p class="section-subtitle">Descubre el lujo y confort en cada una de nuestras suites</p>
+
+    <div class="rooms-grid">
+      <div class="room-card">
+        <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600');">
+          <div class="room-badge">Premium</div>
+        </div>
+        <div class="room-content">
+          <h3>Suite Presidencial</h3>
+          <p>Máximo lujo con jacuzzi, vista al mar y sala de estar privada</p>
+          <div class="room-features">
+            <span><i class="fas fa-users"></i> 2 personas</span>
+            <span><i class="fas fa-bed"></i> King size</span>
+            <span><i class="fas fa-swimming-pool"></i> Jacuzzi</span>
+          </div>
+          <div class="room-footer">
+            <div class="room-price">S/. 450<span>/noche</span></div>
+            <a *ngIf="isLoggedIn" routerLink="/reservas" class="btn-gold btn-sm">Reservar</a>
+            <a *ngIf="!isLoggedIn" routerLink="/login" class="btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600');">
+          <div class="room-badge">Popular</div>
+        </div>
+        <div class="room-content">
+          <h3>Suite Junior</h3>
+          <p>Elegante suite con balcón privado y cocineta equipada</p>
+          <div class="room-features">
+            <span><i class="fas fa-users"></i> 3 personas</span>
+            <span><i class="fas fa-bed"></i> Queen size</span>
+            <span><i class="fas fa-utensils"></i> Cocina</span>
+          </div>
+          <div class="room-footer">
+            <div class="room-price">S/. 350<span>/noche</span></div>
+            <a *ngIf="isLoggedIn" routerLink="/reservas" class="btn-gold btn-sm">Reservar</a>
+            <a *ngIf="!isLoggedIn" routerLink="/login" class="btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Habitaciones - Oasis Digital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        :root {
+            --negro: #1a1a1a;
+            --negro-suave: #2d2d2d;
+            --negro-carbon: #0f0f0f;
+            --azul-oasis: #4A90E2;
+            --azul-royal: #4169E1;
+            --azul-profundo: #1E3A8A;
+            --blanco: #ffffff;
+            --gris-oscuro: #334155;
+            --sombra-negra: rgba(0, 0, 0, 0.4);
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--negro-carbon) 0%, var(--negro) 20%, var(--gris-oscuro) 60%, #F0F8FF 100%);
+            color: var(--blanco);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #1c1c1c 0%, #2d2d2d 100%) !important;
+            border-bottom: 3px solid #4A90E2;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            color: #4A90E2 !important;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-shadow: 0 2px 4px rgba(74, 144, 226, 0.3);
+        }
+
+        .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link.active,
+        .nav-link:hover {
+            color: #4A90E2 !important;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-light {
+            border: 2px solid #4A90E2;
+            color: #4A90E2;
+        }
+
+        .btn-outline-light:hover {
+            background-color: #4A90E2;
+            color: #ffffff;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: var(--azul-oasis);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);
+        }
+
+        .table {
+            --bs-table-bg: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 100%);
+            --bs-table-color: var(--blanco);
+            border: 2px solid var(--azul-oasis);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--sombra-negra), 0 0 20px rgba(74, 144, 226, 0.3);
+        }
+
+        .table-dark {
+            --bs-table-bg: linear-gradient(90deg, var(--negro) 0%, var(--azul-profundo) 50%, var(--negro-suave) 100%);
+            --bs-table-color: var(--blanco);
+            border-bottom: 2px solid var(--azul-oasis);
+        }
+
+        .table-hover tbody tr:hover {
+            background: linear-gradient(90deg, var(--azul-profundo) 0%, var(--negro-suave) 50%, var(--azul-profundo) 100%) !important;
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            --bs-table-accent-bg: rgba(74, 144, 226, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4A90E2 0%, #4169E1 100%);
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 25px;
+            padding: 12px 25px;
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--negro-elegante) 0%, var(--negro-profundo) 100%);
+            color: var(--azul-oasis);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px var(--sombra-negra-intensa);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger {
+            /* Botón de Eliminar: Rojo */
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .alert-success {
+            /* Alerta de éxito: Verde */
+            background-color: #28a745;
+            border-color: #28a745;
+            color: #ffffff;
+        }
+
+        .alert-danger {
+            /* Alerta de error: Rojo */
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .alert-info {
+            /* Alerta de info: Gris Oscuro */
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #ffffff;
+        }
+        
+        /* Estilos para el menú desplegable */
+        .dropdown-menu {
+            background: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 50%, var(--gris-oscuro) 100%) !important;
+            border: 2px solid var(--azul-oasis) !important;
+            border-radius: 15px !important;
+            box-shadow: 0 15px 40px var(--sombra-negra), 0 0 20px rgba(74, 144, 226, 0.4) !important;
+            backdrop-filter: blur(15px) !important;
+            min-width: 200px !important;
+        }
+        
+        .dropdown-item {
+            color: var(--blanco) !important;
+            padding: 12px 18px !important;
+            transition: all 0.3s ease !important;
+            font-weight: 500 !important;
+            border-radius: 10px !important;
+            margin: 5px !important;
+            text-shadow: 0 1px 3px var(--sombra-negra) !important;
+        }
+        
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, var(--azul-oasis) 0%, var(--azul-royal) 100%) !important;
+            color: var(--blanco) !important;
+            transform: translateX(5px) !important;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4) !important;
+        }
+        
+        .dropdown-item.active {
+            background: linear-gradient(135deg, var(--azul-royal) 0%, var(--azul-profundo) 100%) !important;
+            color: var(--blanco) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Oasis Digital</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" th:href="@{/dashboard}">Dashboard</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_RECEPCIONISTA')">
+                        <a class="nav-link" th:href="@{/clientes/registrar}">Registro Cliente</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_RECEPCIONISTA')">
+                        <a class="nav-link" th:href="@{/reservas/crear}">Reservas</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')">
+                        <a class="nav-link active" th:href="@{/habitaciones}">Habitaciones</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_RECEPCIONISTA', 'ROLE_ADMIN')">
+                        <a class="nav-link" th:href="@{/clientes/historial}">Historial Cliente</a>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGestion" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestión de Empleados
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownGestion">
+                            <li><a class="dropdown-item" th:href="@{/empleados/registrar}">Registrar Nuevo</a></li>
+                            <li><a class="dropdown-item" th:href="@{/empleados/lista}">Ver Lista</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <a class="nav-link" th:href="@{/reportes/generar}">Reportes</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                        <a class="nav-link" th:href="@{/auditoria/logs}">Logs de Auditoría</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <span class="nav-link text-white">Bienvenido, <span
+                                sec:authentication="name">Usuario</span></span>
+                    </li>
+                    <li class="nav-item">
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="btn btn-outline-light">Cerrar Sesión</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">Gestión de Habitaciones</h2>
+
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="mb-3" sec:authorize="hasAuthority('ROLE_ADMIN')">
+            <a th:href="@{/habitaciones/nueva}" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Habitación</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Número</th>
+                        <th>Tipo</th>
+                        <th>Precio por Noche</th>
+                        <th>Estado</th>
+                        <th sec:authorize="hasAuthority('ROLE_ADMIN')">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="habitacion : ${habitaciones}">
+                        <td th:text="${habitacion.id}"></td>
+                        <td th:text="${habitacion.numero}"></td>
+                        <td th:text="${habitacion.tipo}"></td>
+                        <td
+                            th:text="${'S/. ' + #numbers.formatDecimal(habitacion.precioPorNoche, 1, 'POINT', 2, 'COMMA')}">
+                        </td>
+                        <td th:text="${habitacion.estado}"></td>
+                        <td sec:authorize="hasAuthority('ROLE_ADMIN')">
+                            <a th:href="@{/habitaciones/editar/{id}(id=${habitacion.id})}"
+                                class="btn btn-warning btn-sm btn-action">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <form th:action="@{/habitaciones/eliminar}" method="post" class="d-inline">
+                                <input type="hidden" name="id" th:value="${habitacion.id}" />
+                                <button type="submit" class="btn btn-danger btn-sm btn-action"
+                                    onclick="return confirm('¿Estás seguro de que quieres eliminar esta habitación?');">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:if="${#lists.isEmpty(habitaciones)}" class="alert alert-info">
+                No hay habitaciones registradas.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script th:src="@{/js/oasis-effects.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Forzar funcionamiento del dropdown
+            const dropdownToggle = document.querySelector('#navbarDropdownGestion');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            if (dropdownToggle && dropdownMenu) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Cerrar dropdown al hacer click fuera
+                document.addEventListener('click', function(e) {
+                    if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                        dropdownMenu.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

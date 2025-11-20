@@ -1,0 +1,92 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+    <!-- Títulos y mensajes de error/éxito (Visibles siempre) -->
+    <h2 class="mb-4">{{ accion === 'nueva' ? 'Nueva Habitación' : 'Editar Habitación' }}</h2>
+
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <!-- 1. Muestra un cargador mientras isLoading es TRUE (solo en modo editar) -->
+    <div *ngIf="isLoading" class="text-center p-5">
+        <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+        <p class="mt-2">Cargando datos de la habitación...</p>
+    </div>
+
+    <!-- 2. CLAVE: El formulario solo se renderiza si isLoading es FALSE (cuando los datos ya están) -->
+    <div *ngIf="!isLoading" class="card p-4 shadow-sm">
+        <form (ngSubmit)="guardarHabitacion()">
+
+            <!-- Campo Número -->
+            <div class="mb-3">
+                <label for="numero" class="form-label">Número de Habitación</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="numero"
+                    name="numero"
+                    [(ngModel)]="habitacion.numero"
+                    required
+                    placeholder="Ej: 101"
+                    [attr.disabled]="accion === 'editar' ? true : null"
+                >
+            </div>
+
+            <!-- Campo Tipo -->
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo de Habitación</label>
+                <select
+                    class="form-select"
+                    id="tipo"
+                    name="tipo"
+                    [(ngModel)]="habitacion.tipo"
+                    required
+                >
+                    <option value="" disabled>Seleccione un tipo</option>
+                    <option value="Simple">Simple</option>
+                    <option value="Doble">Doble</option>
+                    <option value="Suite">Suite</option>
+                    <option value="Matrimonial">Matrimonial</option>
+                </select>
+            </div>
+
+            <!-- Campo Precio -->
+            <div class="mb-3">
+                <label for="precio" class="form-label">Precio por Noche (S/.)</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    id="precio"
+                    name="precio"
+                    [(ngModel)]="habitacion.precioPorNoche"
+                    required
+                    min="1"
+                    step="0.01"
+                >
+            </div>
+
+            <!-- Campo Estado (Solo para edición) -->
+            <div *ngIf="accion === 'editar'" class="mb-3">
+                <label for="estado" class="form-label">Estado</label>
+                <select
+                    class="form-select"
+                    id="estado"
+                    name="estado"
+                    [(ngModel)]="habitacion.estado"
+                    required
+                >
+                    <option value="DISPONIBLE">DISPONIBLE</option>
+                    <option value="OCUPADA">OCUPADA</option>
+                    <option value="MANTENIMIENTO">MANTENIMIENTO</option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <a routerLink="/habitaciones" class="btn btn-secondary me-2">Cancelar</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> {{ accion === 'nueva' ? 'Crear' : 'Guardar Cambios' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

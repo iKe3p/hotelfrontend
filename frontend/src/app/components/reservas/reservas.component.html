@@ -1,0 +1,65 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-4">
+  <h2 class="mb-4">Gestión de Reservas</h2>
+
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Habitación</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th *ngIf="isAdmin || isRecepcionista">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reserva of reservas">
+          <td>{{ reserva.id }}</td>
+          <td>{{ reserva.cliente?.nombres }} {{ reserva.cliente?.apellidos }}</td>
+          <td>{{ reserva.habitacion?.numero }} ({{ reserva.habitacion?.tipo }})</td>
+          <td>{{ reserva.fechaInicio | date:'dd-MM-yyyy' }}</td>
+          <td>{{ reserva.fechaFin | date:'dd-MM-yyyy' }}</td>
+          <td>S/. {{ reserva.totalPagar | number:'1.2-2' }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'bg-primary': reserva.estadoReserva === 'ACTIVA',
+              'bg-info': reserva.estadoReserva === 'PENDIENTE',
+              'bg-success': reserva.estadoReserva === 'FINALIZADA',
+              'bg-danger': reserva.estadoReserva === 'CANCELADA'
+            }">
+              {{ reserva.estadoReserva }}
+            </span>
+          </td>
+          <td *ngIf="isAdmin || isRecepcionista">
+            <button *ngIf="reserva.estadoReserva !== 'FINALIZADA' && reserva.estadoReserva !== 'CANCELADA'" 
+                    class="btn btn-warning btn-sm" 
+                    (click)="finalizarReserva(reserva.id)">
+              Finalizar
+            </button>
+            <button *ngIf="reserva.estadoReserva !== 'CANCELADA' && reserva.estadoReserva !== 'FINALIZADA'" 
+                    class="btn btn-danger btn-sm" 
+                    (click)="cancelarReserva(reserva.id)">
+              Cancelar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="reservas.length === 0" class="alert alert-info">
+      No hay reservas registradas.
+    </div>
+  </div>
+</div>
+

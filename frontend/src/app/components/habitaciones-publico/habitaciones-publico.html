@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+
+<section class="section-custom">
+  <div class="container-custom">
+    <h2 class="section-title">
+      <i class="fas fa-bed"></i> Nuestras Habitaciones
+    </h2>
+    <p class="section-subtitle">Tipos y precios según disponibilidad</p>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div class="rooms-grid">
+      <div class="room-card" *ngFor="let hab of habitaciones">
+        <div class="room-image" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600');">
+          <div class="room-badge" [ngClass]="getTipoClass(hab.tipo)">{{ hab.tipo }}</div>
+        </div>
+        <div class="room-content">
+          <h3>{{ hab.tipo }}</h3>
+          <p>Habitación {{ hab.numero }} - {{ hab.estado }}</p>
+          <div class="room-footer">
+            <div class="room-price">S/. {{ hab.precioPorNoche.toFixed(2) }}<span>/noche</span></div>
+            <a *ngIf="isLoggedIn" routerLink="/reservas/crear" [queryParams]="{habitacionId: hab.id}" class="btn-gold btn-sm">Reservar</a>
+            <a *ngIf="!isLoggedIn" routerLink="/login" class="btn-gold btn-sm">Reservar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" style="margin-top: 30px;">
+      <a routerLink="/" class="btn-outline-gold btn-lg">
+        <i class="fas fa-arrow-left"></i> Volver al inicio
+      </a>
+    </div>
+  </div>
+</section>

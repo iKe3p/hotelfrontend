@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Clientes - Sistema Hotelero</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --azul-oasis: #4A90E2;
+      --azul-claro: #87CEEB;
+      --azul-cielo: #B0E0E6;
+      --azul-profundo: #1E3A8A;
+      --azul-royal: #4169E1;
+      --blanco: #ffffff;
+      --gris-claro: #F8FAFC;
+      --gris-medio: #E2E8F0;
+      --gris-oscuro: #334155;
+      --negro: #1a1a1a;
+      --negro-suave: #2d2d2d;
+      --negro-carbon: #0f0f0f;
+      --negro-profundo: #000000;
+      --negro-elegante: #1c1c1c;
+      --negro-metalico: #2c2c2c;
+      --dorado-elegante: #F59E0B;
+      --sombra-azul: rgba(74, 144, 226, 0.3);
+      --sombra-negra: rgba(0, 0, 0, 0.4);
+      --sombra-negra-intensa: rgba(0, 0, 0, 0.7);
+    }
+    
+    body {
+      background: linear-gradient(135deg, var(--negro-carbon) 0%, var(--negro) 20%, var(--gris-oscuro) 60%, #F0F8FF 100%);
+      color: var(--blanco);
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, var(--negro) 0%, var(--negro-suave) 100%) !important;
+      border-bottom: 3px solid var(--azul-oasis);
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px var(--sombra-negra), 0 0 15px var(--sombra-azul);
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar-brand {
+      color: var(--azul-oasis) !important;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-shadow: 0 2px 4px var(--sombra-negra), 0 0 10px var(--azul-oasis);
+    }
+
+    .nav-link {
+      color: #ffffff !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link.active,
+    .nav-link:hover {
+      color: var(--azul-oasis) !important;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline-light {
+      border: 2px solid var(--azul-oasis);
+      color: var(--azul-oasis);
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+      background: linear-gradient(135deg, var(--negro-elegante) 0%, var(--negro-profundo) 100%);
+      color: var(--azul-oasis);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--sombra-negra-intensa);
+    }
+
+    .container {
+      margin-top: 140px;
+    }
+
+    .client-details-section,
+    .client-list-section {
+      background: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 50%, var(--gris-oscuro) 100%);
+      padding: 35px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px var(--sombra-negra), 0 0 20px rgba(74, 144, 226, 0.3);
+      border: 2px solid var(--azul-oasis);
+      margin-bottom: 20px;
+      backdrop-filter: blur(15px);
+      position: relative;
+      z-index: 1;
+    }
+
+    h2,
+    h3 {
+      color: var(--azul-oasis);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);
+    }
+
+    strong {
+      color: var(--azul-oasis);
+      text-shadow: 0 1px 3px var(--sombra-negra);
+    }
+
+    .table {
+      --bs-table-bg: linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 100%);
+      --bs-table-color: #ffffff !important;
+      border: 2px solid #4A90E2;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(74, 144, 226, 0.3);
+    }
+    
+    .table td, .table th {
+      color: #ffffff !important;
+      border-color: rgba(74, 144, 226, 0.3) !important;
+    }
+    
+    .table tbody td {
+      color: #ffffff !important;
+      background-color: transparent !important;
+    }
+    
+    .table tbody tr {
+      color: #ffffff !important;
+    }
+    
+    .table tbody td * {
+      color: #ffffff !important;
+    }
+    
+    .table tbody tr td {
+      color: #ffffff !important;
+    }
+
+    .table-striped>tbody>tr:nth-of-type(odd)>* {
+      --bs-table-accent-bg: rgba(74, 144, 226, 0.05);
+    }
+
+    .table thead th {
+      background: linear-gradient(90deg, #1a1a1a 0%, #1E3A8A 50%, #2d2d2d 100%);
+      color: #ffffff;
+      border-bottom: 2px solid #4A90E2;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    /* Remover efectos hover de la tabla de reservas */
+    .table tbody tr:hover {
+      background-color: transparent !important;
+    }
+
+    .form-control {
+      background: linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 100%);
+      border: 2px solid #4A90E2;
+      color: #ffffff;
+      border-radius: 10px;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .form-control:focus {
+      background: linear-gradient(145deg, #1a1a1a 0%, #1E3A8A 20%, #1a1a1a 100%);
+      border-color: #4169E1;
+      box-shadow: 0 0 20px #4A90E2, inset 0 2px 5px rgba(0, 0, 0, 0.4);
+      color: #ffffff;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4A90E2 0%, #4169E1 100%);
+      border-color: #4A90E2;
+      color: #ffffff;
+      font-weight: bold;
+      border-radius: 25px;
+      box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4169E1 0%, #3B5998 100%);
+      border-color: #4169E1;
+      color: #ffffff;
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      border-color: #3B82F6;
+      color: #ffffff;
+      border-radius: 20px;
+    }
+
+    .btn-info:hover {
+      background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+      border-color: #2563EB;
+      color: #ffffff;
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+      border-color: #F59E0B;
+      color: #ffffff;
+      font-weight: bold;
+      border-radius: 20px;
+    }
+
+    .btn-danger {
+      /* Botón de Eliminar/Cancelar: Rojo */
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: #ffffff;
+    }
+
+    .btn-success {
+      /* Botón de Finalizar: Verde */
+      background-color: #28a745;
+      border-color: #28a745;
+      color: #ffffff;
+    }
+
+    /* Badges de estado de reserva */
+    .badge.bg-primary {
+      background: linear-gradient(135deg, #4A90E2 0%, #4169E1 100%) !important;
+      color: #ffffff !important;
+    }
+
+    /* ACTIVA -> Dorado */
+    .badge.bg-info {
+      background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%) !important;
+      color: #ffffff !important;
+    }
+
+    /* PENDIENTE -> Blanco */
+    .badge.bg-success {
+      background-color: #28a745 !important;
+      color: #ffffff !important;
+    }
+
+    /* FINALIZADA -> Verde */
+    .badge.bg-danger {
+      background-color: #dc3545 !important;
+      color: #ffffff !important;
+    }
+
+    /* CANCELADA -> Rojo */
+    .badge.bg-secondary {
+      background-color: #6c757d !important;
+      color: #ffffff !important;
+    }
+
+    /* No Activa/Otros -> Gris */
+    
+    /* Dropdown igual al de habitaciones */
+    .dropdown-menu {
+      background: linear-gradient(145deg, #1E3A8A 0%, #3B82F6 100%) !important;
+      border: 2px solid var(--azul-oasis) !important;
+      border-radius: 10px !important;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(74, 144, 226, 0.4) !important;
+      backdrop-filter: blur(15px) !important;
+      min-width: 150px !important;
+      max-width: 150px !important;
+      z-index: 99999 !important;
+      position: absolute !important;
+      padding: 6px !important;
+      margin-top: 5px !important;
+    }
+    
+    .dropdown-item {
+      color: #ffffff !important;
+      padding: 8px 12px !important;
+      transition: all 0.3s ease !important;
+      font-weight: 500 !important;
+      border-radius: 6px !important;
+      margin: 2px 0 !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: none !important;
+      font-size: 0.85rem !important;
+      text-align: center !important;
+      white-space: nowrap !important;
+    }
+    
+    .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      transform: none !important;
+    }
+    
+    .dropdown-item.active {
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+    }
+    
+    /* Placeholders más visibles */
+    .form-control::placeholder,
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.8) !important;
+      opacity: 1 !important;
+      font-weight: 500 !important;
+    }
+  </style>
+</head>
+
+<body class="historial-page">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard">Oasis Digital</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_RECEPCIONISTA')">
+            <a class="nav-link" th:href="@{/clientes/registrar}">Registro Cliente</a>
+          </li>
+          <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_RECEPCIONISTA')">
+            <a class="nav-link" th:href="@{/reservas/crear}">Reservas</a>
+          </li>
+          <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')">
+            <a class="nav-link" th:href="@{/habitaciones}">Habitaciones</a>
+          </li>
+          <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')">
+            <a class="nav-link active" aria-current="page" th:href="@{/clientes/historial}">Historial Cliente</a>
+          </li>
+          <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGestion" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Gestión de Empleados
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownGestion">
+              <li><a class="dropdown-item" th:href="@{/empleados/registrar}">Registrar Nuevo</a></li>
+              <li><a class="dropdown-item" th:href="@{/empleados/lista}">Ver Lista</a></li>
+            </ul>
+          </li>
+          <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+            <a class="nav-link" th:href="@{/reportes/generar}">Reportes</a>
+          </li>
+          <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+            <a class="nav-link" th:href="@{/auditoria/logs}">Logs de Auditoría</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <span class="nav-link text-white me-2">Bienvenido, <span sec:authentication="name"></span></span>
+          </li>
+          <li class="nav-item">
+            <form th:action="@{/logout}" method="post" style="display: inline; margin: 0;">
+              <button type="submit" class="btn btn-outline-light" style="border: none; background: none; color: inherit; padding: 8px 16px; border-radius: 20px; border: 2px solid var(--azul-oasis);">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+      <span th:text="${successMessage}"></span>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+      <span th:text="${errorMessage}"></span>
+    </div>
+    <div th:if="${reservasBloqueo}" class="alert" style="background: linear-gradient(145deg, var(--negro-suave) 0%, var(--negro) 50%, var(--gris-oscuro) 100%); border: 2px solid var(--azul-oasis); color: var(--blanco); border-radius: 20px; padding: 30px; margin: 20px 0; box-shadow: 0 15px 40px var(--sombra-negra), 0 0 20px rgba(74, 144, 226, 0.3); backdrop-filter: blur(15px);" role="alert">
+      <h5 class="alert-heading fw-bold" style="color: var(--azul-oasis); margin-bottom: 15px; font-family: 'Playfair Display', serif; font-weight: 700; text-shadow: 0 2px 8px var(--sombra-negra), 0 0 15px var(--azul-oasis);"><i class="fas fa-exclamation-triangle"></i> Reservas activas detectadas</h5>
+      <p class="mb-3" style="color: var(--blanco); text-shadow: 0 1px 3px var(--sombra-negra);">No puedes eliminar a este cliente porque mantiene reservas activas. Cancela o finaliza las reservas listadas para continuar.</p>
+      <div class="list-group">
+        <div class="list-group-item d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-2" style="background: linear-gradient(145deg, var(--negro) 0%, var(--gris-oscuro) 100%); border: 1px solid var(--azul-oasis); border-radius: 10px; padding: 15px;"
+          th:each="reservaBloqueo : ${reservasBloqueo}">
+          <div style="color: var(--blanco);">
+            <strong class="d-block" style="color: var(--azul-oasis);">Reserva #
+              <span th:text="${reservaBloqueo.id()}"></span>
+            </strong>
+            <span th:text="'Habitación: ' + ${reservaBloqueo.habitacion()}"></span><br>
+            <span th:text="'Desde: ' + ${#temporals.format(reservaBloqueo.fechaInicio(), 'dd/MM/yyyy')}"></span>
+            <span th:text="'hasta: ' + ${#temporals.format(reservaBloqueo.fechaFin(), 'dd/MM/yyyy')}"></span><br>
+            <span th:text="'Estado: ' + ${reservaBloqueo.estado()}"></span>
+          </div>
+          <div class="mt-3 mt-lg-0">
+            <!-- Nota: En esta sección no podemos verificar fácilmente si tiene pago, 
+                 pero el backend ya valida y mostrará error si intenta cancelar una reserva pagada -->
+            <form th:action="@{/reservas/cancelar/{id}(id=${reservaBloqueo.id()})}" method="post" class="d-inline">
+              <button type="submit" class="btn btn-danger btn-sm">
+                <i class="fas fa-times-circle"></i> Cancelar
+              </button>
+            </form>
+            <!-- Mostrar Finalizar para reservas ACTIVAS o PENDIENTES -->
+            <form th:if="${reservaBloqueo.estado().equalsIgnoreCase('ACTIVA') || reservaBloqueo.estado().equalsIgnoreCase('PENDIENTE')}"
+              th:action="@{/reservas/finalizar/{id}(id=${reservaBloqueo.id()})}" method="post" class="d-inline ms-2">
+              <button type="submit" class="btn btn-success btn-sm">
+                <i class="fas fa-check-circle"></i> Finalizar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div th:if="${cliente}" class="client-details-section">
+      <h2 class="mb-4" th:text="'Detalle del Cliente: ' + ${cliente.nombres} + ' ' + ${cliente.apellidos}">Detalle del
+        Cliente</h2>
+
+      <p><strong>Nombres:</strong> <span th:text="${cliente.nombres}"></span></p>
+      <p><strong>Apellidos:</strong> <span th:text="${cliente.apellidos}"></span></p>
+      <p><strong>DNI:</strong> <span th:text="${cliente.dni}"></span></p>
+      <p><strong>Nacionalidad:</strong> <span th:text="${cliente.nacionalidad}"></span></p>
+      <p><strong>Email:</strong> <span th:text="${cliente.email}"></span></p>
+      <p><strong>Teléfono:</strong> <span th:text="${cliente.telefono}"></span></p>
+
+      <div class="d-flex align-items-center mb-3">
+        <a th:href="@{/clientes/editar/{id}(id=${cliente.id})}" class="btn btn-warning me-2">
+          <i class="fas fa-edit"></i> Editar Datos del Cliente
+        </a>
+        <form th:action="@{/clientes/eliminar/{id}(id=${cliente.id})}" method="post"
+          onsubmit="return confirm('¿Estás seguro de que quieres eliminar a este cliente? Esta acción es irreversible y podría afectar reservas.');">
+          <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash-alt"></i> Eliminar Cliente
+          </button>
+        </form>
+      </div>
+
+      <hr style="border-color: var(--negro-elegante); background: linear-gradient(90deg, transparent, var(--negro-elegante), transparent); height: 2px; opacity: 0.8;">
+      <h3 class="mt-4">Reservas del Cliente</h3>
+      <div th:if="${#lists.isEmpty(reservasCliente)}" class="alert alert-info">
+        Este cliente no tiene reservas registradas.
+      </div>
+      <div th:unless="${#lists.isEmpty(reservasCliente)}">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>ID Reserva</th>
+              <th>Habitación</th>
+              <th>Fecha Entrada</th>
+              <th>Fecha Salida</th>
+              <th>Días Estadía</th>
+              <th>Total Pagar</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="reserva : ${reservasCliente}">
+              <td th:text="${reserva.id}"></td>
+              <td th:text="${reserva.habitacion?.numero + ' (' + reserva.habitacion?.tipo + ')'}"></td>
+              <td
+                th:text="${#temporals.format(reserva.fechaInicio, 'dd-MM-yyyy') + ' ' + #temporals.format(reserva.horaEntrada, 'HH:mm')}">
+              </td>
+              <td
+                th:text="${#temporals.format(reserva.fechaFin, 'dd-MM-yyyy') + ' ' + #temporals.format(reserva.horaSalida, 'HH:mm')}">
+              </td>
+              <td th:text="${reserva.diasEstadia}"></td>
+              <td>
+                <span th:with="totalServicios=${reserva.calcularTotalServicios()}, totalHabitacion=${reserva.totalPagar != null ? reserva.totalPagar : 0.0}, totalFinal=${totalHabitacion + totalServicios}"
+                      th:text="${'S/.' + #numbers.formatDecimal(totalFinal, 1, 'POINT', 2, 'COMMA')}"></span>
+                <span th:if="${reserva.calcularTotalServicios() > 0}" 
+                      style="display: block; font-size: 0.85em; color: #87CEEB; margin-top: 2px;">
+                  (Base: S/.<span th:text="${#numbers.formatDecimal(reserva.totalPagar, 1, 'POINT', 2, 'COMMA')}"></span> 
+                  + Servicios: S/.<span th:text="${#numbers.formatDecimal(reserva.calcularTotalServicios(), 1, 'POINT', 2, 'COMMA')}"></span>)
+                </span>
+              </td>
+              <td>
+                <span th:classappend="${reserva.estadoReserva == 'ACTIVA' ? 'bg-primary' :
+                                              (reserva.estadoReserva == 'PENDIENTE' ? 'bg-info' :
+                                              (reserva.estadoReserva == 'FINALIZADA' ? 'bg-success' :
+                                              'bg-danger'))}" class="badge" th:text="${reserva.estadoReserva}"></span>
+              </td>
+              <td>
+                <div th:if="${reserva.estadoReserva == 'ACTIVA' || reserva.estadoReserva == 'PENDIENTE'}">
+                  <!-- Botón Cancelar: solo si NO tiene pago -->
+                  <form th:if="${reserva.pago == null}" th:action="@{/reservas/cancelar/{id}(id=${reserva.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm"
+                      onclick="return confirm('¿Estás seguro de que quieres CANCELAR esta reserva? Esta acción liberará la habitación.');">
+                      <i class="fas fa-times-circle"></i> Cancelar
+                    </button>
+                  </form>
+
+                  <!-- Botón Finalizar: siempre para reservas ACTIVAS o PENDIENTES -->
+                  <form th:action="@{/reservas/finalizar/{id}(id=${reserva.id})}" method="post"
+                    th:style="${reserva.pago == null ? 'display:inline; margin-left: 5px;' : 'display:inline;'}">
+                    <button type="submit" class="btn btn-success btn-sm"
+                      onclick="return confirm('¿Estás seguro de que quieres FINALIZAR esta reserva (realizar Check-out)?');">
+                      <i class="fas fa-check-circle"></i> Finalizar
+                    </button>
+                  </form>
+                </div>
+                <div th:unless="${reserva.estadoReserva == 'ACTIVA' || reserva.estadoReserva == 'PENDIENTE'}">
+                  <span
+                    th:classappend="${reserva.estadoReserva == 'FINALIZADA' ? 'badge bg-success' : 'badge bg-danger'}">
+                    <span th:text="${reserva.estadoReserva}"></span>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <a th:href="@{/clientes/historial}" class="btn btn-primary mt-3">Volver a la Lista de Clientes</a>
+    </div>
+
+
+    <div th:unless="${cliente}" class="client-list-section">
+      <h2 class="mb-4">Lista de Clientes Registrados</h2>
+
+      <div class="search-forms-container">
+        <form th:action="@{/clientes/historial}" method="get" class="d-flex flex-grow-1">
+          <input type="text" name="search" class="form-control me-2" placeholder="Buscar por DNI, Nombres o Apellidos"
+            th:value="${search != null ? search : ''}">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        <form th:action="@{/clientes/historial}" method="get" class="d-flex w-auto">
+          <input type="text" name="dni" class="form-control me-2" placeholder="Buscar detalle por DNI (8 dígitos)"
+            style="max-width: 220px;" pattern="[0-9]{8}" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          <button type="submit" class="btn btn-info">Ver Detalle por DNI</button>
+        </form>
+      </div>
+
+      <hr class="my-4" style="color: #FFD700;">
+
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">
+                <a th:href="@{/clientes/historial(page=${currentPage}, size=${pageSize}, sortBy='dni', sortDir=${sortBy == 'dni' && sortDir == 'asc' ? 'desc' : 'asc'}, search=${search})}"
+                  class="text-white text-decoration-none">
+                  DNI <i
+                    th:class="${sortBy == 'dni' ? (sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down') : 'fas fa-sort'}"></i>
+                </a>
+              </th>
+              <th scope="col">
+                <a th:href="@{/clientes/historial(page=${currentPage}, size=${pageSize}, sortBy='nombres', sortDir=${sortBy == 'nombres' && sortDir == 'asc' ? 'desc' : 'asc'}, search=${search})}"
+                  class="text-white text-decoration-none">
+                  Nombres <i
+                    th:class="${sortBy == 'nombres' ? (sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down') : 'fas fa-sort'}"></i>
+                </a>
+              </th>
+              <th scope="col">
+                <a th:href="@{/clientes/historial(page=${currentPage}, size=${pageSize}, sortBy='apellidos', sortDir=${sortBy == 'apellidos' && sortDir == 'asc' ? 'desc' : 'asc'}, search=${search})}"
+                  class="text-white text-decoration-none">
+                  Apellidos <i
+                    th:class="${sortBy == 'apellidos' ? (sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down') : 'fas fa-sort'}"></i>
+                </a>
+              </th>
+              <th scope="col">Email</th>
+              <th scope="col">Teléfono</th>
+              <th scope="col">Reservas Activas</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="clienteItem : ${clientesPage.content}">
+              <td th:text="${clienteItem.dni}"></td>
+              <td th:text="${clienteItem.nombres}"></td>
+              <td th:text="${clienteItem.apellidos}"></td>
+              <td th:text="${clienteItem.email}"></td>
+              <td th:text="${clienteItem.telefono}"></td>
+              <td>
+                <span th:if="${clienteItem.hasActiveReservations}" class="badge bg-success">Sí <i
+                    class="fas fa-check-circle"></i></span>
+                <span th:unless="${clienteItem.hasActiveReservations}" class="badge bg-secondary">No <i
+                    class="fas fa-times-circle"></i></span>
+              </td>
+              <td>
+                <a th:href="@{/clientes/historial(id=${clienteItem.id})}" class="btn btn-info btn-sm">
+                  <i class="fas fa-eye"></i> Ver Detalle
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div th:if="${clientesPage.totalElements == 0}" class="no-results">
+          <p style="color: #ffffff;">No se encontraron clientes.</p>
+        </div>
+      </div>
+
+      <nav aria-label="Page navigation" th:if="${clientesPage != null and clientesPage.totalPages > 0}">
+        <ul class="pagination pagination-controls">
+          <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+            <a class="page-link"
+              th:href="@{/clientes/historial(page=${currentPage - 1}, size=${pageSize}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}"
+              aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" th:each="i : ${#numbers.sequence(0, clientesPage.totalPages - 1)}"
+            th:classappend="${i == currentPage ? 'active' : ''}">
+            <a class="page-link"
+              th:href="@{/clientes/historial(page=${i}, size=${pageSize}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}"
+              th:text="${i + 1}"></a>
+          </li>
+          <li class="page-item" th:classappend="${currentPage == clientesPage.totalPages - 1 ? 'disabled' : ''}">
+            <a class="page-link"
+              th:href="@{/clientes/historial(page=${currentPage + 1}, size=${pageSize}, sortBy=${sortBy}, sortDir=${sortDir}, search=${search})}"
+              aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script th:src="@{/js/oasis-effects.js}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Forzar funcionamiento del dropdown
+      const dropdownToggle = document.querySelector('#navbarDropdownGestion');
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+      
+      if (dropdownToggle && dropdownMenu) {
+        dropdownToggle.addEventListener('click', function(e) {
+          e.preventDefault();
+          dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Cerrar dropdown al hacer click fuera
+        document.addEventListener('click', function(e) {
+          if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.style.display = 'none';
+          }
+        });
+      }
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchParam = urlParams.get('search');
+      if (searchParam) {
+        const searchInput = document.querySelector('.search-forms-container form:first-child input[name="search"]');
+        if (searchInput) {
+          searchInput.value = searchParam;
+        }
+      }
+      const dniParam = urlParams.get('dni');
+      if (dniParam) {
+        const dniInput = document.querySelector('.search-forms-container form:last-child input[name="dni"]');
+        if (dniInput) {
+          dniInput.value = dniParam;
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
