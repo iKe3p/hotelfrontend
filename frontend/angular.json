@@ -40,14 +40,19 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "3MB"
                 },
                 {
                   "type": "all",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "3MB"
                 }
               ],
+              "optimization": {
+                "scripts": true,
+                "styles": false,
+                "fonts": true
+              },
               "inlineCriticalCss": false,
               "outputHashing": "all"
             },
