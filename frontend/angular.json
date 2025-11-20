@@ -50,8 +50,8 @@
               ],
               "optimization": {
                 "scripts": true,
-                "styles": false,
-                "fonts": true
+                "styles": true,
+                "fonts": false
               },
               "inlineCriticalCss": false,
               "outputHashing": "all"
